@@ -1,0 +1,135 @@
+//////////////////////////////////////////
+//										//
+// Exercise 11							//
+// views and indexes 					//
+//										//
+//////////////////////////////////////////
+
+ 1. Q1
+Create a view named view_alumni_details that contains the name, degree, batch, phonenumber and emailid of all alumni users(role -'Alumni') sorted by name. Give an alias to the user name as user_name and degree as degree_name. 
+
+CREATE OR REPLACE VIEW view_alumni_details AS 
+SELECT u.name AS user_name,d.name AS degree_name ,p.batch,u.phonenumber,u.emailid 
+FROM user u,degree d,profile p,role r
+WHERE r.id=u.role_id 
+AND u.profile_id=p.id 
+AND d.id=p.degree_id 
+AND r.name='Alumni'
+ORDER BY u.name;
+
+
+ 2. Q2
+Create a view named view_degree_details that contains the name of the degrees and the departments offering the degrees sorted by degree name. Give an alias to the degree name as degree_name and department name as dept_name. 
+
+CREATE OR REPLACE VIEW view_degree_details AS 
+SELECT d.name AS degree_name,dt.name AS dept_name 
+FROM degree d,department dt
+WHERE d.department_id=dt.id
+ORDER BY d.name;
+
+
+ 3. Q3
+Create a view named view_experience_details that contains the name and all company names in which they have worked of all alumni users(role - 'Alumni') , sorted by name and then by company name. (Include users who have never been employed also). Give an alias to the user name as user_name and company name as company_name. 
+
+CREATE OR REPLACE VIEW view_experience_details AS
+SELECT user.name AS user_name,experience.company_name AS company_name 
+FROM role
+JOIN user ON user.role_id=role.id
+LEFT OUTER JOIN profile ON profile.id=user.profile_id
+JOIN experience ON experience.profile_id=profile.id
+AND role.name='Alumni' 
+ORDER BY user.name,experience.company_name;
+
+
+ 4. Q4
+create a view named view_BSC_CT_details that contains the name, email id and phone number of all alumni(role - 'Alumni') users from 'BSC_CT', sorted by name. 
+
+CREATE OR REPLACE VIEW view_BSC_CT_details AS
+SELECT user.name,user.emailid,user.phonenumber 
+FROM role
+JOIN user ON user.role_id=role.id
+JOIN profile ON profile.id=user.profile_id
+JOIN degree ON degree.id=profile.degree_id
+WHERE degree.name='BSC_CT' 
+AND role.name='Alumni'
+ORDER BY user.name;
+
+
+ 5. Q5
+Create a view named view_female_alumni_details that contains the name, batch and degree of all female alumni users(role - 'Alumni'), sorted by name of the user. Give an alias to the user name as user_name and degree name as degree_name. 
+
+CREATE OR REPLACE VIEW view_female_alumni_details AS 
+SELECT user.name AS user_name,profile.batch,degree.name AS degree_name 
+FROM role
+JOIN user ON role.id=user.role_id
+JOIN profile ON profile.id=user.profile_id
+JOIN degree ON degree.id=profile.degree_id
+WHERE profile.gender='Female' 
+AND role.name='Alumni'
+ORDER BY user.name;
+
+
+ 6. Q6
+Create a view named view_TCS_alumni_details that contains the name, emailid and designation of all alumni users(role - 'Alumni') who are currently working in TCS, sorted by name. 
+
+CREATE OR REPLACE VIEW view_TCS_alumni_details AS
+SELECT user.name,user.emailid,profile.designation 
+FROM user
+JOIN role ON role.id=user.role_id
+JOIN profile ON profile.id=user.profile_id
+JOIN experience ON experience.profile_id=profile.id
+WHERE role.name='Alumni' 
+AND experience.company_name='TCS' 
+AND experience.current=1
+ORDER BY user.name;
+
+
+ 7. Q7
+Create a view named view_event_details that contains the names of the users who have organized events and the name of the events, sorted by name of the user and then by event date. Give an alias to the user name as user_name and event name as event_name. 
+
+CREATE OR REPLACE VIEW view_event_details AS 
+SELECT user.name AS user_name,event.name AS event_name 
+FROM user
+JOIN event ON user.id=event.organiser_id
+ORDER BY event.date;
+
+
+ 8. Q8
+Create a view named view_TCS_batchwise_count_details that contains the batch and the number of users who have been or are a part of 'TCS' (Give an alias as TCS_count), sorted by batch. Include only batches in which TCS_count is atleast 1. 
+
+CREATE OR REPLACE VIEW view_TCS_batchwise_count_details AS
+SELECT p.batch, COUNT(e.profile_id) AS TCS_count 
+FROM profile AS p, experience AS e 
+WHERE p.id = e.profile_id 
+AND e.company_name = 'TCS' 
+GROUP BY p.batch 
+HAVING COUNT(e.profile_id) >= 1 
+ORDER BY p.batch;
+
+
+ 9. Q9
+Create a view named view_event_count_details that contains the names of the user and the number of events each user has organized (Give an alias as event_count), sorted by name of the user. Include only the names of users who have organized atleast one event. 
+
+CREATE OR REPLACE VIEW view_event_count_details AS
+SELECT u.name, COUNT(e.organiser_id) AS event_count 
+FROM user AS u, event AS e 
+WHERE u.id = e.organiser_id 
+GROUP BY u.name 
+HAVING COUNT(e.organiser_id) >= 1 
+ORDER BY u.name;
+
+
+ 10. Q10
+Create a view named view_skillset_count_details that contains the name of all the alumni user(s) (Role-'Alumni') and the number of skillsets they possess (Give an alias as skill_count), sorted by name. 
+
+CREATE OR REPLACE VIEW view_skillset_count_details AS
+SELECT u.name ,
+(SELECT count(*) 
+ FROM user us,profile_skills ps 
+ WHERE us.profile_id=ps.profile_id 
+ AND us.name=u.name) AS skill_count
+FROM user u,role r 
+WHERE r.name='Alumni' 
+AND r.id=u.role_id 
+GROUP BY u.name 
+ORDER BY u.name;

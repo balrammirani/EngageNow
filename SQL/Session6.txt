@@ -1,0 +1,95 @@
+//////////////////////////////////////////
+//										//
+// Exercise 6							//
+//										//
+//////////////////////////////////////////
+
+//////////////////////////////////////////
+//Find Solutions Below		            //
+//////////////////////////////////////////
+
+ 1) Qn 1
+Write a query to display the name of the users and the length of the names of the users, sorted by the name of the user. Give an alias to the length of the name as length. Use the inbuilt function length(). 
+
+ 2) Qn 2
+Write a query to display the name of the user(s) having the longest name, sorted by the name of the user. 
+
+ 3) Qn 3
+Write a query to display the name of the user(s) who have set a password of less than 3 characters, sorted by the name of the user. 
+
+ 4) Qn 4
+Write a query to display the names of the users and the first 2 characters of the names of all users, sorted by the name of the user. Give an alias to the first 2 characers as start_2_chars.
+
+ 5) Qn 5
+Write a query to display the names of the users and the last 2 characters of the names of all users, sorted by the name of the user. Give an alias to the first 2 characers as last_2_chars. 
+
+ 6) Qn 6
+Write a query to display the names of all users in lowercase, sorted by the name of the user. Give an alias as lower_case. 
+
+ 7) Qn 7
+Write a query to display the names of all users in uppercase, sorted by the name of the user. Give an alias as upper_case. 
+
+ 8) Qn 8
+Write a query to display the names of users in a 30 character length field by left padding with ?, sorted by the name of the user. Give an alias as modified_name. 
+
+ 9) Qn 9
+Write a query to display the names of users in a 30 character length field by right padding with ?, sorted by the name of the user. Give an alias as modified_name. 
+
+ 10) Qn 10
+Write a query to display the names of the users and the names of users with leading space characters removed, sorted by the name of the user. Give an alias as modified_name. 
+
+ 11) Qn 11
+Write a query to display the names of the users and the names of users with trailing space characters removed, sorted by the name of the user. Give an alias as modified_name. 
+
+ 12) Qn 12
+Write a query to display the names of the users and the names of users with leading and trailing space characters removed, sorted by the name of the user. Give an alias as modified_name. 
+
+ 13) Qn 13
+Write a query to display the names of all users that start and end with letter a. 
+
+ 14) Qn 14
+Write a query to display the names of users that end with aa, sorted by name. 
+
+ 15) Qn 15
+Write a query to display the names of users that contain 'aa', sorted by name. 
+
+ 16) Qn 16
+Write a query to display all 6-letter names that start with P sorted by name. 
+
+/////////////////////////////////
+//
+// ANSWERS
+//
+/////////////////////////////////
+
+1) select name,length(name) as length from user order by name;
+
+2) Select name From user Where length(name) IN (Select max(length(name )) From user );
+
+3) Select name From user Where length(password)<3 order by name;
+
+4) SELECT name,LEFT(name,2) as start_2_chars from user order by name;
+
+5) SELECT name,RIGHT(name,2) as last_2_chars from user order by name;
+
+6) SELECT LOWER(name) as lower_case from user order by name;
+
+7) SELECT UPPER(name) as upper_case from user order by name;
+
+8) SELECT LPAD(name,30,'?') as modified_name from user order by name;
+
+9) SELECT RPAD(name,30,'?') as modified_name from user order by name;
+
+10) SELECT name,LTRIM(name) as modified_name from user order by name;
+
+11) SELECT name,RTRIM(name) as modified_name from user order by name;
+
+12) SELECT name,RTRIM(LTRIM(name)) as modified_name from user order by name;
+
+13) SELECT name from user WHERE name LIKE 'a%a';
+
+14) SELECT name from user WHERE name LIKE '%aa' ORDER BY name;
+
+15) SELECT name from user WHERE name LIKE '%aa%' ORDER BY name;
+
+16) SELECT name from user WHERE name LIKE 'P%' AND LENGTH(name)=6 ORDER BY name;

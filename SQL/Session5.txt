@@ -1,0 +1,65 @@
+//////////////////////////////////////////
+//										//
+// Exercise 5							//
+//										//
+//////////////////////////////////////////
+
+//////////////////////////////////////////
+//Find Solutions Below		            //
+//////////////////////////////////////////
+
+ 1) Qn 1
+Write a query to display the absolute value of 2. 
+
+ 2) Qn 2
+Write a query to display the absolute value of -32. Give an alias as absolute. 
+
+ 3) Qn 3
+Write a query to display the smallest integer value not less than 1.23. Give an alias as int_value. 
+
+ 4) Qn 4
+Write a query to display the smallest integer value not less than -1.23. Give an alias as int_value. 
+
+ 5) Qn 5
+Write a query to convert a base 16 number 'F' to a base-2 number. Give an alias as base2. 
+
+ 6) Qn 6
+Write a query to display the largest integer value not greater than 1.23. Give an alias as int_value. 
+
+ 7) Qn 7
+Write a query to display the largest integer value not greater than -1.23. Give an alias as int_value. 
+
+ 8) Qn 8
+Write a query to round off 1.298 to one decimal place. Give an alias as round_value. 
+
+ 9) Qn 9
+Write a query to return the weekday index of the date 1st March, 2014. Give an alias as weekday_index. Hint : Use the function weekday. 
+
+ 10) Qn 10
+Write a query to return the day name of the date 1st March, 2014. Give an alias as weekday_name. 
+
+/////////////////////////////////
+//
+// ANSWERS
+//
+/////////////////////////////////
+
+1) select abs(2);
+
+2) select abs(-32) as absolute;
+
+3) select ceiling(1.23) as int_value;
+
+4) select ceil(-1.23) as int_value;
+
+5) select conv('f',16,2) as base2;
+
+6) select floor(1.23) as int_value;
+
+7) select floor(-1.23) as int_value;
+
+8) select round(1.298,1) as round_value;
+
+9) select weekday('2014-03-01') as weekday_index;
+
+10) select dayname('2014-03-01') as weekday_name;

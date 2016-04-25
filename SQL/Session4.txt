@@ -1,0 +1,140 @@
+//////////////////////////////////////////
+//										//
+// Exercise 4							//
+//										//
+//////////////////////////////////////////
+
+//////////////////////////////////////////
+//Find Solutions Below		            //
+//////////////////////////////////////////
+
+1. Qn 1
+Write a query to display the number of roles in the role table. Give an alias to the number of roles as role_count. 
+
+ 2. Qn 2
+Write a query to display the number of skills in the skill table. Give an alias to the number of skills as skill_count. 
+
+ 3. Qn 3
+Write a query to display the number of users who have not filled their profile yet. Give an alias to the number of users as user_count. 
+
+ 4. Qn 4
+Write a query to display the number of alumni from 2008 batch who have registered in the system. Give an alias as alumni_2008_count. 
+
+ 5. Qn 5
+Write a query to display the number of male alumni from 2008 batch who have registered in the system. Give an alias as alumni_male_2008_count. 
+
+ 6. Qn 6
+Write a query to display the batch name and the number of alumni from each batch who have registered in the system, sorted by batch name. Give an alias to the number of alumni from each batch as alumni_count. 
+
+ 7. Qn 7
+Write a query to display the batch name and the number of male alumni from each batch who have registered in the system,sorted by batch name. Give an alias to the number of male alumni from each batch as male_alumni_count. 
+
+ 8. Qn 8
+Write a query to display the batch name and the number of female alumni from each batch who have registered in the system, sorted by batch name. Give an alias to the number of female alumni from each batch as female_alumni_count. 
+
+ 9. Qn 9
+Write a query to display the number of unique designations in the profile table. Give an alias as designation_count. 
+
+ 10. Qn 10
+Write a query to display the number of users who are currently working as 'Project Manager's. Give an alias as PM_Count. 
+
+ 11. Qn 11
+Write a query to display the batch of the seniormost alumni woking as 'Project Manager'. Give an alias as Senior_PM_Batch. 
+
+ 12. Qn 12
+Write a query to display the batch of the juniormost alumni woking as 'Project Manager'. Give an alias as Junior_PM_Batch. 
+
+ 13. Qn 13
+Write a query to display the designation and the number of users who are currently working in each designation, sorted by designation. Give an alias as designation_count. 
+
+ 14. Qn 14
+Write a query to display the number of companies in which the college alumni are currently working in. Give an alias as company_count. 
+
+ 15. Qn 15
+Write a query to display the name of the company and the number of alumni who are currently working in each company. Give an alias to the number of alumni as alumni_count. 
+
+ 16. Qn 16
+Write a query to display the number of projects in which the team size is more than 10. Give an alias as project_count. 
+
+ 17. Qn 17
+Write a query to display the number of events that were scheduled for the year 2013. Give an alias as number_of_events. 
+
+ 18. Qn 18
+Write a query to display the year and the number of events scheduled in each year, sorted by year. Give an alias as number_of_events. 
+
+ 19. Qn 19
+Write a query to display the number of posts posted in January 2014. Give an alias as number_of_posts. 
+
+ 20. Qn 20
+Write a query to display the number of queries raised / answered between 1 a.m and 5 a.m (both inclusive). Give an alias as number_of_queries. 
+
+ 21. Qn 21
+Write a query to display the number of events that were scheduled on 27th January, 2014. Give an alias as number_of_events. 
+
+ 22. Qn 22
+Write a query to display the number of posts posted before 1st December, 2013. Give an alias as number_of_posts. 
+
+ 23. Qn 23
+Write a query to display the number of posts posted after 1st December, 2013. Give an alias as number_of_posts. 
+
+ 24. Qn 24
+Write a query to display the year and the number of events scheduled in each year, sorted by year. Give an alias as number_of_events. 
+
+ 25. Qn 25
+Write a query to display the name of the month and the number of events scheduled in each month in the year 2013, sorted by month. Give an alias to the month name as month_name and the to the number of events scheduled as number_of_events. Name of the month must be displayed as January, February ... 
+
+/////////////////////////////////
+//
+// ANSWERS
+//
+/////////////////////////////////
+
+1.	SELECT COUNT(*) AS role_count FROM role;
+
+2.	SELECT COUNT(*) AS skill_count FROM skill;
+
+3.	SELECT COUNT(*)AS user_count FROM user WHERE profile_id IS NULL;
+
+4.	SELECT COUNT(*)AS alumni_2008_count FROM profile WHERE batch=2008;
+
+5.	SELECT COUNT(*)AS alumni_male_2008_count FROM profile WHERE batch=2008 and gender='male';
+
+6.	SELECT batch, COUNT(*) AS alumni_count FROM profile GROUP BY batch ORDER BY batch;
+
+7.	SELECT batch, COUNT(*) AS male_alumni_count FROM profile WHERE gender='male' GROUP BY batch  ORDER BY batch;
+
+8.	SELECT batch, COUNT(*) AS female_alumni_count FROM profile WHERE gender='female' GROUP BY batch  ORDER BY batch;
+
+9.	SELECT COUNT( DISTINCT(designation) ) AS designation_count FROM profile
+
+10.	SELECT COUNT(*) AS PM_count FROM profile WHERE designation='project manager';
+
+11.	SELECT min(batch) AS Senior_PM_Batch FROM profile WHERE designation='project manager';
+
+12.	SELECT max(batch) AS Junior_PM_Batch FROM profile WHERE designation='project manager';
+
+13.	SELECT designation, COUNT(*) AS designation_count FROM profile GROUP BY designation ORDER BY designation;
+
+14.	SELECT COUNT(company_name) AS company_count FROM experience WHERE end IS NULL;
+
+15.	SELECT company_name, COUNT(*) AS alumni_count FROM experience WHERE end IS NULL GROUP BY company_name;
+
+16.	SELECT COUNT(distinct(name)) AS project_count FROM project WHERE number_of_members >10;
+
+17.	SELECT COUNT(distinct(name)) AS number_of_events FROM event WHERE year(date)='2013';
+
+18.	SELECT year(date), COUNT(name) AS number_of_events FROM event GROUP BY year(date) ORDER BY year(date);
+
+19.	SELECT COUNT(*)AS number_of_posts FROM post WHERE date>'2014-01';
+
+20.	SELECT COUNT(*) AS number_of_queries FROM query WHERE time(date)>='01:00:00' and time(date)<='05:00:00';
+
+21.	SELECT COUNT(*) number_of_events FROM event WHERE date>='2014-01-27';
+
+22.	SELECT COUNT(*) AS number_of_posts FROM post WHERE date< '2013-12-01';
+
+23.	SELECT COUNT(*) AS number_of_posts FROM post WHERE date> '2013-12-01';
+
+24.	SELECT year(date), COUNT(*) AS number_of_events FROM event GROUP BY year(date) ORDER BY year(date);
+
+25.	SELECT DATE_FORMAT(date,'%M') 'month_name',COUNT(*) 'number_of_events' FROM event WHERE year(date)='2013' GROUP BY DATE_FORMAT(date,'%M') ORDER BY date;

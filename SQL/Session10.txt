@@ -1,0 +1,155 @@
+//////////////////////////////////////////
+//										//
+// Exercise 10							//
+// Sub Queries-2 						//
+//										//
+//////////////////////////////////////////
+
+ 1. Qn 1
+Write a query to display the names of users who have done their higher studies in 'Texas University', sorted in order. 
+
+--> SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM higher_degree WHERE university_name='Texas University')ORDER BY name;
+
+
+ 2. Qn 2
+Write a query to display the names of users from 2008 batch who have done their higher studies in 'Texas University', sorted in order. 
+
+-->SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM higher_degree WHERE university_name='Texas University')AND profile_id IN (SELECT id FROM profile WHERE batch=2008)ORDER BY name;
+
+
+ 3. Qn 3
+Write a query to display the names of users from 2008 batch CSE department who have done their higher studies in 'Texas University', sorted in order. 
+
+-> SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM higher_degree WHERE university_name='Texas University')AND profile_id IN (SELECT id FROM profile WHERE batch=2008 AND degree_id IN (SELECT id FROM degree WHERE department_id IN (SELECT id FROM department WHERE   name='CSE')))ORDER BY name;
+
+
+ 4. Qn 4
+Write a query to display the names of users from 'MECH' department who have 'Programming' skills, sorted in order. 
+
+SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM profile_skills WHERE profile_id IN (SELECT id FROM profile WHERE degree_id IN (SELECT id FROM degree WHERE department_id IN (SELECT id FROM department WHERE name='MECH'))) AND skill_id IN (SELECT id FROM skill WHERE name='Programming'))ORDER BY name;
+
+
+ 5. Qn 5
+Write a query to display the names of users from 'MECH' department who are currently working in 'TCS', sorted in order. 
+
+SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM experience WHERE profile_id IN (SELECT id FROM profile WHERE degree_id IN (SELECT id FROM degree WHERE department_id IN (SELECT id FROM department WHERE name='MECH'))) AND company_name='TCS' AND current=1)ORDER BY name;
+
+
+ 6. Qn 6
+Write a query to display the names of users who have been part of projects with more than 10 members, sorted in order. 
+
+SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM project WHERE number_of_members>10) ORDER BY name;
+
+
+ 7. Qn 7
+Write a query to display the names of users from 2008 batch who have raised or answered queries, sorted in order. 
+
+SELECT name FROM user WHERE profile_id IN (SELECT id FROM profile WHERE batch=2008) AND id IN (SELECT user_id FROM query ) ORDER BY name;
+
+
+ 8. Qn 8
+Write a query to display the names of users who have raised queries, sorted in order. 
+
+SELECT name FROM user WHERE id IN (SELECT user_id FROM query WHERE parent_id is null) ORDER BY name;
+
+
+ 9. Qn 9
+Write a query to display the names of users who have answered queries, sorted in order. 
+
+SELECT name FROM user WHERE id IN (SELECT user_id FROM query WHERE parent_id is not null) ORDER BY name;
+
+
+ 10. Qn 10
+Write a query to display the names of users from 2008 batch who have raised queries, sorted in order. 
+
+SELECT name FROM user WHERE id IN (SELECT user_id FROM query WHERE parent_id is null ) AND profile_id IN (SELECT id FROM profile WHERE batch=2008) ORDER BY name;
+
+
+ 11. Qn 11
+Write a query to display the names of users from 2008 who have answered queries, sorted in order. 
+
+SELECT name FROM user WHERE id IN (SELECT user_id FROM query WHERE parent_id is not null) AND profile_id IN (SELECT id FROM profile WHERE batch=2008) ORDER BY name;
+
+
+ 12. Qn 12
+Write a query to display the names of users who have organised events, sorted in order. 
+
+SELECT name FROM user WHERE id IN (SELECT organiser_id FROM event) ORDER BY name;
+
+
+ 13. Qn 13
+Write a query to display the names of 'Alumni' users who have organised events, sorted in order. 
+
+SELECT name FROM user WHERE id IN (SELECT organiser_id FROM event) AND role_id IN (SELECT id FROM role WHERE name='Alumni') ORDER BY name;
+
+
+ 14. Qn 14
+Write a query to display the names of users who have organized events in the year 2013, sorted in order. 
+
+SELECT name FROM user WHERE id IN (SELECT organiser_id FROM event WHERE year(date)='2013') ORDER BY name;
+
+
+ 15. Qn 15
+Write a query to display the name, phone number and email id of organizer of 'ICSIP2008'. 
+
+SELECT name,phonenumber,emailid FROM user WHERE id IN (SELECT organiser_id FROM event WHERE name='ICSIP 2008');
+
+
+ 16. Qn 16
+Write a query to display the names of all users who have posted 'Technology' related posts in the year 2013, sorted by name in order. 
+
+SELECT name FROM user WHERE id IN (SELECT user_id FROM post WHERE type_id IN (SELECT id FROM post_type WHERE name='Technology') AND year(date)='2013') ORDER BY name;
+
+
+ 17. Qn 17
+Write a query to display the names of users who are currently working in TCS as 'Project Manager's, sorted in order. 
+
+SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM experience WHERE profile_id IN (SELECT id FROM profile WHERE designation='Project Manager') AND company_name='TCS' AND current=1) ORDER BY name;
+
+
+ 18. Qn 18
+Write a query to display the names of users who have done their higher studies in other colleges or universities, sorted in order. [Hint : Details of higher studies done in other colleges / universities is specified in the higher_degree table]. 
+
+SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM higher_degree WHERE university_name IS NOT NULL) ORDER BY name
+
+
+ 19. Qn 19
+Write a query to display the names of users who have been working in TCS in the year 2012, sorted in order. 
+
+SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM experience WHERE company_name='TCS' AND ((year(end)>='2012' AND year(start)<='2012') or  end is null)) ORDER BY name;
+
+
+ 20. Qn 20
+Write a query to display the number of events organised by alumni users. Give an alias as 'event_count'. 
+
+SELECT count(id)event_count FROM event WHERE organiser_id IN (SELECT id FROM user WHERE role_id IN (SELECT id FROM role WHERE name='Alumni'));
+
+
+ 21. Qn 21
+Write a query to display the number of degrees offered by CSE department. Give an alias as 'degree_count'. 
+
+SELECT count(id)degree_count FROM degree WHERE department_id IN (SELECT id FROM department WHERE name='CSE');
+
+
+ 22. Qn 22
+Write a query to display the number of 'Alumni Coordinator's. Give an alias as 'coordinator_count'. 
+
+SELECT count(id)coordinator_count FROM user WHERE role_id IN (SELECT id FROM role WHERE name='ALUMNI COORDINATOR');
+
+
+ 23. Qn 23
+Write a query to display the number of alumni from CSE department who have registered in the system. Give an alias as cse_alumni_count. 
+
+SELECT count(id)cse_alumni_count FROM user WHERE role_id IN (SELECT id FROM role WHERE name='Alumni') AND profile_id IN (SELECT id FROM profile WHERE degree_id IN (SELECT id FROM degree WHERE department_id IN (SELECT id FROM department WHERE name='CSE')));
+
+
+ 24. Qn 24
+Write a query to display the alumni users (Role - 'Alumni') who have not raised or answered queries, sorted by name of the user. 
+
+SELECT name FROM user WHERE id not IN (SELECT user_id FROM query ) AND role_id IN (SELECT id FROM role WHERE name='Alumni')ORDER BY name;
+
+
+ 25. Qn 25
+Write a query to display the names of the users who have worked in the project(s) with minimum members,sorted by name of the user. 
+
+SELECT name FROM user WHERE profile_id IN (SELECT profile_id FROM project WHERE number_of_members=(SELECT min(number_of_members) FROM project))ORDER BY name;

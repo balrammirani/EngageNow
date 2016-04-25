@@ -1,0 +1,114 @@
+//////////////////////////////////////////
+//										//
+// Exercise 9							//
+// Sub Queries-1 						//
+//										//
+//////////////////////////////////////////
+
+ 1.  Write a query to display the names of all administrators (role Admin) sorted by name in ascending order. 
+
+ --> SELECT user.name FROM user,role WHERE role.id=user.role_id AND role.name='admin' ORDER BY user.name asc;
+
+ 2.  Write a query to display the names of all alumni (role Alumni) sorted by name in descending order. 
+
+ --> SELECT user.name FROM user,role WHERE role.id=user.role_id AND role.name='alumni' ORDER BY user.name desc;
+
+ 3.  Write a query to display the names of all degrees offered by 'CSE' department, sorted in ascending order. 
+
+ --> SELECT degree.name FROM degree,department WHERE degree.department_id=department.id AND department.name='CSE' ORDER BY degree.name asc;
+
+ 4.  Write a query to display the name of the department offering the degree 'BSC_CT'. 
+
+ --> SELECT department.name FROM degree,department WHERE degree.department_id=department.id AND degree.name='BSC_CT';
+
+ 5.  Write a query to display the names of all female alumni (role Alumni), sorted in order. 
+
+ --> SELECT user.name FROM user,role,profile WHERE role.id=user.role_id AND user.profile_id=profile.id AND role.name='alumni' AND
+	 profile.gender='female' ORDER BY user.name asc;
+
+ 6. Write a query to display the department of user Ram in the college. 
+
+ --> SELECT department.name FROM user,degree,department,profile WHERE profile.degree_id=degree.id AND  degree.department_id=department.id
+	 AND user.profile_id=profile.id AND user.name='Ram'
+
+ 7.  Write a query to display the university name(s) in which Ram has done his higher studies, sorted in ascending order. 
+
+ --> SELECT higher_degree.university_name FROM user,higher_degree,profile WHERE profile.id=higher_degree.profile_id 
+	 AND user.profile_id=profile.id AND user.name='Ram'
+
+ 8.	 Write a query to display the designation of Ram. 
+
+ --> SELECT profile.designation FROM user,profile WHERE user.profile_id=profile.id AND user.name='Ram';
+
+ 9.  Write a query to display the name of the skillsets of Ram, sorted by name in ascending order. 
+
+ --> SELECT skill.name FROM user,profile,profile_skills,skill WHERE user.profile_id=profile.id AND profile_skills.profile_id=profile.id
+	 AND profile_skills.skill_id=skill.id AND user.name='ram' ORDER BY skill.name asc
+
+ 10. Write a query to display the work experience details of Anithaa (company name, start date and end date in order), sorted by start date. 
+
+ --> SELECT e.company_name,e.start,e.end FROM user as u,profile as p,experience as e WHERE u.profile_id=p.id AND e.profile_id=p.id AND 		 u.name='Anithaa' ORDER BY e.start
+
+ 11. Write a query to display the names of projects in which Ram has been a part of, sorted in order. 
+
+ --> SELECT pj.name FROM user as u,profile as p,project as pj WHERE u.profile_id=p.id AND pj.profile_id=p.id AND u.name='Ram' ORDER BY pj.name
+
+ 12. Write a query to display the contents of queries raised or answered by Ram, sorted by date. 
+
+ --> SELECT query.content FROM user,query WHERE query.user_id=user.id AND user.name='Ram' ORDER BY query.date
+
+ 13. Write a query to display the contents of posts posted by Ram, sorted by date. 
+
+ --> SELECT post.content FROM user,post WHERE post.user_id=user.id AND user.name='Ram' ORDER BY post.date
+
+ 14. Write a query to display the contents of posts related to Technology posted by Ram, sorted by date. 
+
+ --> SELECT post.content FROM user,post,post_type WHERE post.user_id=user.id AND post.type_id=post_type.id AND user.name='Ram' AND 			post_type.name='Technology' ORDER BY post.date
+
+ 15. Write a query to display the contents of posts posted by Ram in the year 2012, sorted by date. 
+
+ --> SELECT post.content FROM user,post WHERE post.user_id=user.id AND user.name='RAM' AND year(post.date)='2012' ORDER BY post.date;
+
+ 16. Write a query to display the name and phone numbers of all Alumni users from 2008 batch, sorted in ascending order based on name. 
+
+ --> SELECT u.name,u.phonenumber FROM user as u,role,profile WHERE u.profile_id=profile.id AND u.role_id=role.id AND profile.batch=2008  AND role.name='Alumni' ORDER BY u.name asc;
+
+ 17. Write a query to display the name of all male Alumni from 2008 batch, sorted in order. 
+
+ --> SELECT u.name FROM user as u,role,profile WHERE u.profile_id=profile.id  AND u.role_id=role.id AND profile.batch=2008 AND 				 role.name='Alumni' AND profile.gender='male' ORDER BY u.name asc;
+
+ 18. Write a query to display the name of all Alumni from BSC_CT 2008 batch, sorted by name. 
+
+ --> SELECT u.name FROM user as u,role,profile,degree WHERE u.profile_id=profile.id  AND u.role_id=role.id AND profile.degree_id=degree.id 	AND degree.name ='BSC_CT'AND profile.batch=2008  AND role.name='Alumni' AND profile.gender='male' ORDER BY u.name asc;
+
+ 19. Write a query to display the name of all Alumni of 2008 batch from CSE department, sorted by name. 
+
+ --> SELECT u.name FROM user as u,role,profile,degree,department WHERE u.profile_id=profile.id  AND u.role_id=role.id AND 					profile.degree_id=degree.id AND degree.department_id=department.id AND department.name ='CSE'AND profile.batch=2008 AND role.name='Alumni' 
+ ORDER BY u.name asc;
+
+ 20. Write a query to display the name and email details of all users from 2008 batch sorted by name. 
+
+ --> SELECT user.name,user.emailid FROM user,profile WHERE user.profile_id=profile.id AND profile.batch=2008 ORDER BY user.name;
+
+ 21. Write a query to display the names of users who have good 'Web Design' skills, sorted by name. 
+
+ --> SELECT user.name FROM user,profile,profile_skills, skill WHERE user.profile_id=profile.id AND profile_skills.profile_id=profile.id 
+	 AND profile_skills.skill_id=skill.id AND skill.name='Web Design' ORDER BY user.name;
+
+ 22. Write a query to display the names of all alumni users who have been or are a part of TCS, sorted by name. 
+
+ --> SELECT user.name FROM user,profile,experience WHERE user.profile_id=profile.id AND experience.profile_id=profile.id
+	 AND experience.company_name='TCS' ORDER BY user.name;
+
+ 23. Write a query to display the names and email ids of all alumni users who are currently working in TCS, sorted by name. 
+
+ --> SELECT user.name,user.emailid FROM user,role,profile,experience WHERE user.profile_id=profile.id AND user.role_id=role.id
+	 AND experience.profile_id=profile.id AND role.name='alumni' AND experience.company_name='TCS' AND experience.current='1' ORDER BY user.name;
+
+ 24. Write a query to display the name and role of all users, sorted by name of the user. 
+
+ --> SELECT user.name,role.name FROM user,role WHERE user.role_id=role.id ORDER BY user.name asc;
+
+ 25. Write a query to display the name and role details of all users who have filled in the profile details, sorted by name in ascending 	order. 
+
+ --> SELECT user.name,role.name FROM user,role,profile WHERE user.role_id=role.id AND user.profile_id=profile.id AND profile.id is not null order by user.name asc;

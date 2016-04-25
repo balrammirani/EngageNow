@@ -1,0 +1,141 @@
+//////////////////////////////////////////
+//										//
+// Exercise 3							//
+//										//
+//////////////////////////////////////////
+
+//////////////////////////////////////////
+//Find Solutions Below		            //
+//////////////////////////////////////////
+
+
+ 1) Qn 1
+Write a query to display the entire contents of the role table, sorted by name in ascending order. 
+
+ 2) Qn 2
+Write a query to display the entire contents of the skill table, sorted by name in ascending order. 
+
+ 3) Qn 3
+Write a query to display the entire contents of the department table, sorted by name in descending order. 
+
+ 4) Qn 4
+Write a query to display the entire contents of the post_type table, sorted by name in descending order. 
+
+ 5) Qn 5
+Write a query to display all role names, sorted in ascending order. 
+
+ 6) Qn 6
+Write a query to display the names and descriptions of all skills, sorted by skill name. 
+
+ 7) Qn 7
+Write a query to display the names of all departments, sorted in ascending order. 
+
+ 8) Qn 8
+Write a query to display the names of all post types, sorted in ascending order. 
+
+ 9) Qn 9
+Write a query to display the names of all universities in which the alumni from this college have done or are doing their higher studies, sorted in ascending order. 
+
+ 10) Qn 10
+Write a query to display all unique designations from the profile table sorted in ascending order. 
+
+ 11) Qn 11
+Write a query to display the batch details of all alumni who are currently project managers, sorted in ascending order. 
+
+ 12) Qn 12
+Write a query to display all designations of Male students/alumni from the profile table sorted in ascending order. 
+
+ 13) Qn 13
+Write a query to display all designations of Female students/alumni from batch 2008 from the profile table sorted in ascending order. 
+
+ 14) Qn 14
+Write a query to display the address details of Male alumni from 2008 batch, sorted in ascending order based on address. 
+
+ 15) Qn 15
+Write a query to display the names of companies in which the college alumni have been or are employees, sorted in ascending order based on name. 
+
+ 16) Qn 16
+Write a query to display the names of companies in which the college alumni are employees at present, sorted in descending order based on name. 
+
+ 17) Qn 17
+Write a query to display the names and phone numbers of all users, sorted in descending order by name. 
+
+ 18) Qn 18
+Write a query to display the names, emailids and phone numbers of all users, sorted in ascending order by name. 
+
+ 19) Qn 19
+Write a query to display the user name and password of Ram. 
+
+ 20) Qn 20
+Write a query to display the names and descriptions of projects with more than 10 members, sorrted in ascending order by name. 
+
+ 21) Qn 21
+Write a query to display the names and descriptions of all events scheduled on 27th January, 2014, sorted in ascending order by name. 
+
+ 22) Qn 22
+Write a query to display the content of all posts, sorted in descending order by date. 
+
+ 23) Qn 23
+Write a query to display the content of all posts posted in January, 2014, sorted in descending order by date. 
+
+ 24) Qn 24
+Write a query to display the contents of all queries posted in year 2013, sorted in descending order by date. 
+
+ 25) Qn 25
+Write a query to display the names of all events scheduled in January 27, 2014 at 3 p.m, sorted by name in ascending order. 
+
+/////////////////////////////////
+//
+// ANSWERS
+//
+/////////////////////////////////
+
+1) SELECT *FROM role ORDER BY name;
+
+2) SELECT *FROM skill ORDER BY name;
+
+3) SELECT *FROM department ORDER BY name DESC;
+
+4) SELECT *FROM post_type ORDER BY name DESC;
+
+5) SELECT name FROM role ORDER BY name;
+
+6) SELECT name,description FROM skill ORDER BY name;
+
+7) SELECT name FROM department ORDER BY name;
+
+8) SELECT name FROM post_type ORDER BY name;
+
+9) SELECT DISTINCT university_name FROM higher_degree ORDER BY university_name;
+
+10) SELECT DISTINCT designation FROM profile ORDER BY designation;
+
+11) SELECT DISTINCT batch FROM profile,experience WHERE designation='PROJECT MANAGER' AND current=1 ORDER BY batch;
+
+12) SELECT DISTINCT designation FROM profile WHERE gender='MALE' ORDER BY designation;
+
+13) SELECT DISTINCT designation FROM profile WHERE batch=2008 AND gender='FEMALE' ORDER BY designation;
+
+14) SELECT address FROM profile WHERE gender='MALE' AND batch=2008 ORDER BY address;
+
+15) SELECT DISTINCT company_name FROM experience ORDER BY company_name;
+
+16) SELECT DISTINCT company_name FROM experience WHERE current=1 ORDER BY company_name DESC;
+
+17) SELECT name,phonenumber FROM user ORDER BY name DESC;
+
+18) SELECT name,emailid,phonenumber FROM user ORDER BY name;
+
+19) SELECT username,password FROM user WHERE name='RAM';
+
+20) SELECT name,short_description FROM project WHERE number_of_members>10 ORDER BY name;
+
+21) SELECT name,description FROM event WHERE date>'2014-01-27' ORDER BY name;
+
+22) SELECT content FROM post ORDER BY date DESC;
+
+23) SELECT content FROM post WHERE date>'2014-01' ORDER BY date DESC;
+
+24) SELECT content FROM query WHERE YEAR(date)='2013' ORDER BY date DESC;
+
+25) SELECT name FROM event WHERE date='2014-01-27 15:00:00.0' ORDER BY name;

@@ -1,0 +1,279 @@
+//////////////////////////////////////////
+//										//
+// Exercise 8							//
+//										//
+//////////////////////////////////////////
+
+ 
+ 1.  Write a query to display the role name and the count of users in each role(Give an alias as role_count), sorted by name. Display only the roles in which there is atleast 1 user. 
+
+ --> SELECT role.name,COUNT(*) AS role_count 
+	 FROM user 
+	 inner JOIN role 
+	 ON user.role_id=role.id 
+	 WHERE user.role_id is not null 
+	 GROUP BY user.role_id 
+	 ORDER BY role.name;
+
+ 2. Write a query to display the role name and the count of users in each role(Give an alias as role_count), sorted by name. Display all roles. 
+
+ --> SELECT r.name, COUNT(u.id) AS role_count 
+	 FROM role AS r 
+	 LEFT OUTER JOIN user AS u 
+	 ON u.role_id = r.id 
+	 GROUP BY r.name
+	 ORDER BY r.name;
+
+ 3. Write a query to display the name of all alumni user(s) (Role-'Alumni') and the number of companies in which each user has worked in (Give an alias as company_count), sorted by user name. 
+
+ --> SELECT u.name, 
+	 (SELECT COUNT(*) 
+	 FROM role AS r, profile AS p, experience AS e 
+	 WHERE u.role_id = r.id 
+	 AND r.name ='Alumni' 
+	 AND u.profile_id = p.id 
+	 AND p.id = e.profile_id) company_count 
+	 FROM user u,role r 
+	 WHERE u.role_id = r.id 
+	 AND r.name = 'Alumni' 
+	 GROUP BY u.name 
+	 ORDER BY u.name;
+
+ 4. Write a query to display the name of the alumni user(s) (Role-'Alumni') who has/have worked in maximum number of companies, sorted by   name. 
+
+ --> SELECT u.name 
+	 FROM role AS r, profile AS p, user AS u, experience AS e 
+	 WHERE u.role_id = r.id 
+	 AND r.name = 'Alumni' 
+	 AND u.profile_id = p.id 
+	 AND p.id = e.profile_id 
+	 GROUP BY u.name 
+	 ORDER BY COUNT(e.profile_id) 
+	 DESC LIMIT 1;
+
+ 5. Write a query to display the name of all the alumni user(s) (Role-'Alumni') and the number of skillsets they possess (Give an alias as skill_count), sorted by name. 
+
+ --> SELECT u.name, 
+	 (SELECT COUNT(*) FROM role AS r, profile AS p, profile_skills AS ps, skill AS s WHERE u.role_id = r.id
+	 AND r.name = 'Alumni' AND u.profile_id = p.id AND p.id = ps.profile_id AND ps.skill_id = s.id) skill_count 
+	 FROM user u,role r 
+	 WHERE u.role_id = r.id 
+	 AND r.name = 'Alumni' 
+	 GROUP BY u.name 
+	 ORDER BY u.name;
+
+ 6. Write a query to display the name of the alumni user(s) (Role-'Alumni') who has/have more than 3 skillsets, sorted by name. 
+
+ --> SELECT u.name 
+	 FROM user AS u, role AS r, profile AS p, profile_skills AS ps, skill AS s 
+	 WHERE u.role_id = r.id 
+	 AND r.name = 'Alumni' 
+	 AND u.profile_id = p.id 
+	 AND p.id = ps.profile_id 
+	 AND ps.skill_id = s.id 
+	 GROUP BY u.name 
+	 HAVING COUNT(*)>3 
+	 ORDER BY u.name;
+
+ 7. Write a query to display the department name and the number of degrees offered by each department (Give an alias as degree_count), sorted by department name. Display only the departments which offer atleast 1 degree. 
+
+ --> SELECT dm.name, COUNT(*) AS degree_count 
+	 FROM degree AS d, department AS dm 
+	 WHERE d.department_id = dm.id 
+	 GROUP BY dm.name 
+	 HAVING COUNT(*) >=1 
+	 ORDER BY dm.name;
+
+ 8. Write a query to display the department name and the number of degrees offered by each department (Give an alias as degree_count), sorted by department name. Display all departments. 
+
+ --> SELECT dm.name, COUNT(d.id) AS degree_count 
+	 FROM department AS dm 
+	 LEFT OUTER JOIN degree AS d 
+	 ON d.department_id =dm.id 
+	 GROUP BY dm.name ORDER BY dm.name;
+
+ 9. Write a query to display the name of the department(s) offering the maximum number of degrees, sorted by department name. 
+
+ --> SELECT dm.name 
+	 FROM department AS dm, degree AS d 
+	 WHERE d.department_id = dm.id 
+	 GROUP BY dm.name HAVING COUNT(d.id) = 3
+	 ORDER BY dm.name ;
+
+ 10. Write a query to display the department name and the number of alumni users registered in the system from each department (Give an alias as alumni_count), sorted by department name. Display only departments from which atleast 1 alumni user has registered. 
+
+ --> SELECT dm.name, COUNT(u.id) AS alumni_count 
+	 FROM department AS dm, degree AS d, profile AS p, user AS u, role AS r
+	 WHERE u.role_id = r.id 
+	 AND r.name = 'Alumni' 
+	 AND u.profile_id = p.id 
+	 AND p.degree_id = d.id 
+	 AND d.department_id = dm.id
+	 GROUP BY dm.name 
+	 HAVING COUNT(u.id) >= 1 
+	 ORDER BY dm.name;
+
+ 11. Write a query to display the department name and the number of alumni users registered in the system from each department (Give an alias as alumni_count), sorted by department name. Display only departments in which atleast 3 alumni users have registered. 
+
+ --> SELECT dm.name, COUNT(u.id) AS alumni_count 
+	 FROM department AS dm, degree AS d, profile AS p, user AS u, role AS r
+	 WHERE u.role_id = r.id 
+	 AND r.name = 'Alumni' 
+	 AND u.profile_id = p.id 
+	 AND p.degree_id = d.id 
+	 AND d.department_id = dm.id
+	 GROUP BY dm.name 
+	 HAVING COUNT(u.id) >= 3 
+	 ORDER BY dm.name;
+
+
+ 12. Write a query to display the post_type and the number of posts posted under each type (Give an alias as post_count), sorted by post_type. Include only post_types under which there is atleast 1 post. 
+
+ --> SELECT pt.name, COUNT(p.id) AS post_count 
+	 FROM post AS p, post_type AS pt 
+	 WHERE pt.id = p.type_id 
+	 GROUP BY pt.id
+	 HAVING COUNT(p.id) >= 1 
+	 ORDER BY pt.name;
+
+
+ 13. Write a query to display the names of the user and the number of posts each user has posted (Give an alias as post_count), sorted by name of the user. Display only the names of users who have posted atleast one post. 
+
+ --> SELECT u.name, COUNT(p.id) AS post_count 
+	 FROM user AS u, post AS p 
+	 WHERE u.id = p.user_id 
+	 GROUP BY u.name 
+	 HAVING COUNT(p.id) >= 1 
+	 ORDER BY u.name;
+
+
+ 14. Write a query to display the names of the user and the number of posts each user has posted (Give an alias as post_count), sorted by name of the user. Display the names of all users. 
+
+ --> SELECT u.name, COUNT(p.id) AS post_count 
+	 FROM user AS u 
+	 LEFT OUTER JOIN post AS p 
+	 ON u.id = p.user_id 
+	 GROUP BY u.name
+	 ORDER BY u.name;
+
+
+ 15. Write a query to display the name(s) of the user who has/have posted the maximum number of posts, sorted by name. 
+
+ --> SELECT u.name 
+	 FROM user AS u, post AS p 
+	 WHERE u.id = p.user_id 
+	 GROUP BY u.name 
+	 HAVING COUNT(p.id) = 4 
+	 ORDER BY u.name;
+
+
+ 16. Write a query to display the name(s) of the alumni user (Role-'Alumni') from 2008 batch who has/have posted the maximum number of posts, sorted by name. 
+
+ --> SELECT u.name
+	 FROM user AS u,post AS p,profile AS pf,role AS r
+	 WHERE u.role_id=r.id 
+	 AND r.name='Alumni' 
+	 AND p.user_id=u.id 
+	 AND u.profile_id=pf.id 
+	 AND pf.batch='2008'
+	 GROUP BY u.name
+	 HAVING COUNT(p.id)>=3
+	 ORDER BY u.name;
+
+
+ 17. Write a query to display the name(s) of the alumni user (Role-'Alumni') from 2008 batch CSE department who has/have posted the maximum number of posts, sorted by name. 
+
+ --> SELECT u.name 
+	 FROM user AS u, profile AS p, post AS ps, degree AS d, department AS dm,role AS r 
+	 WHERE u.role_id = r.id
+	 AND r.name = 'Alumni' 
+	 AND u.profile_id = p.id 
+	 AND p.batch = '2008' 
+	 AND p.degree_id = d.id 
+	 AND d.department_id = dm.id 
+	 AND dm.name = 'CSE' 
+	 AND u.id = ps.user_id 
+	 GROUP BY u.id 
+	 HAVING COUNT(ps.user_id)>= 3 
+	 ORDER BY u.name;
+
+	 
+ 18. Write a query to display the name(s) of the user who has/have organised the maximum number of events, sorted by name. 
+
+ --> SELECT u.name 
+	 FROM user AS u, event AS e 
+	 WHERE u.id = e.organiser_id 
+	 GROUP BY u.name 
+	 HAVING COUNT(e.organiser_id) = 5
+	 ORDER BY u.name;
+
+ 19. Write a query to display the names of the user and the number of events each user has organized (Give an alias as event_count), sorted by name of the user. Display only the names of users who have organized atleast one event. 
+
+ --> SELECT u.name, COUNT(e.organiser_id) AS event_count 
+	 FROM user AS u, event AS e 
+	 WHERE u.id = e.organiser_id 
+	 GROUP BY u.name 
+	 HAVING COUNT(e.organiser_id) >= 1 
+	 ORDER BY u.name;
+
+ 20. Write a query to display the names of the user and the number of events each user has organized (Give an alias as event_count), sorted by name of the user. Display the names of all users. 
+
+ --> SELECT u.name, COUNT(e.organiser_id) AS event_count FROM user AS u 
+	 LEFT OUTER JOIN event AS e 
+	 ON u.id = e.organiser_id
+	 GROUP BY u.name 
+	 ORDER BY u.name;
+
+ 21. Write a query to display the batch and the number of users who have been or are a part of 'TCS' (Give an alias as TCS_count), sorted by batch. Display only batches in which TCS_count is atleast 1. 
+
+ --> SELECT p.batch, COUNT(e.profile_id) AS TCS_count FROM profile AS p, experience AS e 
+	 WHERE p.id = e.profile_id 
+	 AND e.company_name = 'TCS' 
+	 GROUP BY p.batch 
+	 HAVING COUNT(e.profile_id) >= 1 
+	 ORDER BY p.batch;
+
+
+ 22. Write a query to display the name(s) of the user who has/have raised/answered most number of queries, sorted by name. 
+
+ --> SELECT u.name FROM user AS u, query AS q 
+	 WHERE u.id = q.user_id 
+	 GROUP BY u.name 
+	 HAVING COUNT(q.user_id) = 6 
+	 ORDER BY u.name;
+
+ 23. Write a query to display the name(s) of the user who has/have answered most number of queries, sorted by name. 
+
+ --> SELECT u.name 
+	 FROM user AS u, query AS q 
+	 WHERE u.id = q.user_id 
+	 GROUP BY u.name 
+	 HAVING COUNT(q.user_id) = 2 
+	 ORDER BY u.name;
+
+
+ 24. Write a query to display the name(s) of the user and the batch of the user who has/have raised/answered most number of queries, sorted by name. 
+
+ --> SELECT u.name, p.batch 
+	 FROM user AS u, query AS q, profile AS p 
+	 WHERE u.id = q.user_id 
+	 AND u.profile_id = p.id 
+	 GROUP BY u.name 
+	 HAVING COUNT(q.user_id) = 6 
+	 ORDER BY u.name;
+
+ 25. Write a query to display the name(s) of the user and the department of the user who has/have raised/answered most number of queries, sorted by name. Use column alias name as USER_NAME and DEPT_NAME 
+
+ --> SELECT user_name, dept_name 
+	 FROM 
+	 (SELECT name AS user_name, profile_id,id 
+	 FROM user) AS u 
+	 JOIN profile ON u.profile_id=profile.id
+	 JOIN degree ON profile.degree_id=degree.id
+	 JOIN 
+	 (SELECT name AS dept_name,id 
+	 FROM department)AS d ON d.id=degree.department_id
+	 JOIN query ON query.user_id=u.id
+	 GROUP BY user_name
+	 HAVING COUNT(query.content)=6
+	 ORDER BY user_name;

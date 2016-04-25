@@ -1,0 +1,196 @@
+//////////////////////////////////////////
+//										//
+// Exercise 1							//
+//										//
+//////////////////////////////////////////
+
+ 1. Create Table role
+	Write a query to create role table. Sample Query: create table role (id BIGINT(20), name varchar(255) NOT NULL, primary key(id)); 
+
+(
+  Id BIGINT(20), 
+  name varchar(255) NOT NULL,
+  primary key(Id)
+);
+
+ 2. Create Table skill
+    Write a query to create skill table. Please note that the field description can be NULL and the default value is NULL. 
+(
+  Id BIGINT(20)primary key, 
+  description varchar(255) NULL, 
+  name varchar(255) NOT NULL
+);
+
+ 3. Create Table post_type
+	Write a query to create post_type table. 
+(
+  Id BIGINT(20)primary key,
+  name varchar(255) NOT NULL
+);
+
+ 4. Create Table department
+	Write a query to create department table.
+(
+  Id BIGINT(20)primary key, 
+  name varchar(255) NOT NULL
+);
+
+ 5. Create Table degree
+	Write a query to create degree table. 
+(
+  Id BIGINT(20)primary key, 
+  department_id BIGINT(20) NOT NULL,
+  name varchar(255) NOT NULL,
+  FOREIGN KEY(department_id) REFERENCES department(Id)
+);
+
+ 6. Create Table profile
+	Write a query to create profile table. Please note that designation field can be NULL and the default value is NULL. 
+(
+  Id BIGINT(20)primary key,
+  address varchar(255) NOT NULL,
+  batch varchar(255) NOT NULL,
+  degree_id BIGINT(20) NOT NULL,
+  designation varchar(255) NULL,
+  gender varchar(255) NOT NULL,
+  FOREIGN KEY(degree_id) REFERENCES degree(Id)
+);
+
+ 7. Create Table higher_degree
+	Write a query to create higher_degree table. Please note that fields degree_name and university_name can be NULL and the default value is NULL. 
+(
+  Id BIGINT(20)primary key,
+  degree_name varchar(255) NULL,
+  university_name varchar(255) NULL,
+  profile_id BIGINT(20) NOT NULL,
+  FOREIGN KEY(profile_id) REFERENCES profile(Id)
+);
+8. Create Table experience
+Write a query to create experience table. Please note that filed end can be NULL and Default value is NULL. 
+(
+  Id BIGINT(20)primary key,
+  company_name varchar(255) NOT NULL,
+  current BIT(1) NOT NULL,
+  end DATETIME NULL,
+  start DATETIME NOT NULL,
+  profile_id BIGINT(20) NOT NULL,
+  FOREIGN KEY(profile_id) REFERENCES profile(Id)
+);
+
+
+ 9. Create Table project
+	Write a query to create project table. Please note that field short_description can be NULL and the default value is NULL. 
+
+(
+  Id BIGINT(20)primary key,
+  name varchar(255) NOT NULL,
+  number_of_members INT(11) NOT NULL,
+  profile_id BIGINT(20) NOT NULL,
+  short_description varchar(255) NULL,
+  FOREIGN KEY(profile_id) REFERENCES profile(Id)
+);
+
+ 10. Create Table profile_skills
+Write a query to create profile_skills table. 
+(
+  skill_id BIGINT(20),
+  profile_id BIGINT(20),
+  PRIMARY KEY(skill_id,profile_id)
+);
+
+11. Create Table user
+Write a query to create user table. Please note that the field profile_id can be NULL and the default value is NULL. 
+(
+  Id BIGINT(20) primary key,
+  emailid varchar(255) NOT NULL,
+  name varchar(255) NOT NULL,
+  password varchar(255) NOT NULL,
+  phonenumber varchar(255) NOT NULL,
+  profile_id BIGINT(20) NULL,
+  role_id BIGINT(20) NOT NULL,
+  username varchar(255) NOT NULL,
+  FOREIGN KEY(profile_id) REFERENCES profile(Id),
+  FOREIGN KEY(role_id) REFERENCES role(Id)
+);
+
+ 12. Create Table query
+Write a query to create query table. Please note that field parent_id can be NULL and the default value is NULL. 
+(
+  Id BIGINT(20)primary key,
+  content varchar(255) NOT NULL,
+  date DATETIME NOT NULL,
+  parent_id BIGINT(20) NULL,
+  user_id BIGINT(20)NOT NULL,
+  FOREIGN KEY(parent_id) REFERENCES query(Id),
+  FOREIGN KEY(user_id) REFERENCES user(Id)
+);
+
+13. Create Table event
+Write a query to create event table. Please note that field description can be NULL and the default value is NULL. 
+(
+  Id BIGINT(20)primary key,
+  date DATETIME NOT NULL,
+  description varchar(255) NULL,
+  invitation varchar(255) NOT NULL,
+  name varchar(255) NOT NULL,
+  organiser_id BIGINT(20)NOT NULL,
+  FOREIGN KEY(organiser_id) REFERENCES user(Id)
+);
+
+ 14. Create Table post
+Write a query to create post table. 
+
+(
+  Id BIGINT(20)primary key,
+  content varchar(255) NOT NULL,
+  date DATETIME NOT NULL,
+  type_id BIGINT(20) NOT NULL,
+  user_id BIGINT(20)NOT NULL,
+  FOREIGN KEY(type_id) REFERENCES post_type(Id),
+  FOREIGN KEY(user_id) REFERENCES user(Id)
+);
+
+ 15. Add Column to role table
+Write a query to add a new column named description of type varchar(255) to role table. 
+ alter table role add description varchar(255);
+
+ 16. Change column type in role table
+Write a query to change the type of field description in the role table to varchar(500); 
+alter table role modify column description varchar(500);
+
+ 17. Remove column from role table
+Write a query to remove the column description from the role table. 
+alter table role drop column description;
+
+ 18. Change table name role
+Write a query to rename table role to roles. 
+alter table role rename roles;
+
+19. Change table name roles
+Write a query to rename table roles to role.
+alter table roles rename role;
+
+ 20. Add column to department table
+Write a query to add a new column named user_id of type BIGINT(20) to department table. 
+ alter table department add user_id BIGINT(20);
+
+21. Add foreign key constraint to department table
+Write a query to add a constraint to the department table. user_id is a foreign key and it references id in the user table. 
+ALTER TABLE department ADD FOREIGN KEY(user_id) REFERENCES user(Id);
+
+ 22. Remove column from department table
+Write a query to drop the column user_id from the department table. 
+alter table department drop column user_id;
+
+23. Change table name department
+Write a query to rename table department to departments. 
+alter table department rename departments;
+
+ 24. Delete table profile_skills
+Write a query to delete the table profile_skills. 
+drop table profile_skills;
+
+ 25. Delete table post
+Write a query to delete post table.
+
+drop table post;
